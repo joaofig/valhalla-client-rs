@@ -14,6 +14,7 @@ pub mod route;
 pub mod shapes;
 /// Models connected to the healthcheck via the [`status`]-API
 pub mod status;
+mod trace_route;
 
 use log::trace;
 use serde::{Deserialize, Serialize};
