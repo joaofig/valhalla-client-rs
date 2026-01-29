@@ -23,6 +23,7 @@ pub enum ShapeMatchType {
 }
 
 #[derive(Serialize, Default, Debug)]
+/// Trace options
 pub struct TraceOptions {
     search_radius: Option<f64>,
     gps_accuracy: Option<f64>,
@@ -32,7 +33,7 @@ pub struct TraceOptions {
 
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Default, Debug)]
-/// Route request
+/// Trace route request
 pub struct Manifest {
     shape_match: Option<ShapeMatchType>,
     #[serde(flatten)]

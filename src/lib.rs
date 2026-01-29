@@ -10,11 +10,12 @@ pub mod elevation;
 pub mod matrix;
 /// Models connected to the Turn-by-turn [`route`]ing-api
 pub mod route;
+/// Models connected to the Map-matching [`trace_route`]ing-api
+pub mod trace_route;
 /// Shape decoding support for [`route`] and [`elevation`]
 pub mod shapes;
 /// Models connected to the healthcheck via the [`status`]-API
 pub mod status;
-mod trace_route;
 
 use log::trace;
 use serde::{Deserialize, Serialize};
@@ -167,7 +168,7 @@ pub struct RemoteError {
 /// synchronous ("blocking") client implementation
 #[cfg(feature = "blocking")]
 pub mod blocking {
-    use crate::{elevation, matrix, route, status, Error, VALHALLA_PUBLIC_API_URL};
+    use crate::{elevation, matrix, route, status, trace_route, Error, VALHALLA_PUBLIC_API_URL};
     use std::sync::Arc;
 
     #[derive(Debug, Clone)]
@@ -217,6 +218,12 @@ pub mod blocking {
         pub fn route(&self, manifest: route::Manifest) -> Result<route::Trip, Error> {
             self.runtime
                 .block_on(async move { self.client.route(manifest).await })
+        }
+
+        /// Make a trace route (map-matching) request
+        pub fn trace_route(&self, manifest: trace_route::Manifest) -> Result<route::Trip, Error> {
+            self.runtime
+                .block_on(async move { self.client.trace_route(manifest).await })
         }
         /// Make a time-distance matrix routing request
         ///
@@ -374,6 +381,12 @@ impl Valhalla {
     /// ```
     pub async fn route(&self, manifest: route::Manifest) -> Result<route::Trip, Error> {
         let response: route::Response = self.do_request(manifest, "route", "route").await?;
+        Ok(response.trip)
+    }
+
+    /// Make a trace route (map-matching) request
+    pub async fn trace_route(&self, manifest: trace_route::Manifest) -> Result<route::Trip, Error> {
+        let response: route::Response = self.do_request(manifest, "trace_route", "trace_route").await?;
         Ok(response.trip)
     }
 
