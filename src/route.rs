@@ -1085,9 +1085,11 @@ impl Location {
 /// A location is a point on the map that can be used to start or end a route.
 pub struct Location {
     #[serde(rename = "lat")]
-    latitude: f32,
+    /// The latitude of the location in degrees.
+    pub latitude: f32,
     #[serde(rename = "lon")]
-    longitude: f32,
+    /// Longitude of the location in degrees.
+    pub longitude: f32,
     display_lat: Option<f32>,
     display_lon: Option<f32>,
     street: Option<String>,
