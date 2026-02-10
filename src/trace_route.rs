@@ -1,6 +1,6 @@
 use serde::Serialize;
 use crate::{costing, DateTime};
-use crate::route::{Location};
+use crate::route::ShapePoint;
 
 
 #[derive(Serialize, Default, Debug, Clone, Copy, PartialEq, Eq)]
@@ -22,6 +22,7 @@ pub enum ShapeMatchType {
     WalkOrSnap,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Default, Debug)]
 /// Trace options
 pub struct TraceOptions {
@@ -146,15 +147,15 @@ impl TraceOptions {
 #[derive(Serialize, Default, Debug)]
 /// Trace route request
 pub struct Manifest {
-    shape_match: Option<ShapeMatchType>,
     #[serde(flatten)]
     costing: Option<costing::Costing>,
+    shape_match: Option<ShapeMatchType>,
     begin_time: Option<DateTime>,
     durations: Option<Vec<i64>>,
     use_timestamps: Option<bool>,
     trace_options: Option<TraceOptions>,
     linear_references: Option<bool>,
-    shape: Vec<Location>,
+    shape: Vec<ShapePoint>,
 }
 
 impl Manifest {
@@ -166,7 +167,7 @@ impl Manifest {
 
     /// Set the shape for the trace route
     ///
-    pub fn shape(mut self, shape: impl IntoIterator<Item = Location>) -> Self {
+    pub fn shape(mut self, shape: impl IntoIterator<Item = ShapePoint>) -> Self {
         self.shape = shape.into_iter().collect();
         debug_assert!(self.shape.len() >= 2);
         self
