@@ -1,6 +1,6 @@
 use serde::Serialize;
 use crate::{costing, DateTime};
-use crate::route::{Location};
+use crate::route::ShapePoint;
 
 
 #[derive(Serialize, Default, Debug, Clone, Copy, PartialEq, Eq)]
@@ -22,6 +22,7 @@ pub enum ShapeMatchType {
     WalkOrSnap,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Serialize, Default, Debug)]
 /// Trace options
 pub struct TraceOptions {
@@ -146,15 +147,16 @@ impl TraceOptions {
 #[derive(Serialize, Default, Debug)]
 /// Trace route request
 pub struct Manifest {
-    shape_match: Option<ShapeMatchType>,
     #[serde(flatten)]
     costing: Option<costing::Costing>,
+    shape_match: Option<ShapeMatchType>,
     begin_time: Option<DateTime>,
     durations: Option<Vec<i64>>,
     use_timestamps: Option<bool>,
     trace_options: Option<TraceOptions>,
     linear_references: Option<bool>,
-    shape: Vec<Location>,
+    shape: Option<Vec<ShapePoint>>,
+    verbose: Option<bool>,
 }
 
 impl Manifest {
@@ -166,9 +168,8 @@ impl Manifest {
 
     /// Set the shape for the trace route
     ///
-    pub fn shape(mut self, shape: impl IntoIterator<Item = Location>) -> Self {
-        self.shape = shape.into_iter().collect();
-        debug_assert!(self.shape.len() >= 2);
+    pub fn shape(mut self, shape: impl IntoIterator<Item = ShapePoint>) -> Self {
+        self.shape = Some(shape.into_iter().collect());
         self
     }
 
@@ -236,6 +237,32 @@ impl Manifest {
     /// ```
     pub fn use_timestamps(mut self, use_timestamps: bool) -> Self {
         self.use_timestamps = Some(use_timestamps);
+        self
+    }
+
+    /// ```rust
+    /// Sets the verbosity level for the object.
+    ///
+    /// This method allows you to enable or disable verbose mode by passing
+    /// a boolean value. When `true`, verbose mode is enabled; when `false`,
+    /// it is disabled. The `verbose` setting is stored as an `Option<bool>`.
+    ///
+    /// # Parameters
+    /// - `verbose`: A boolean value indicating whether verbose mode
+    ///   should be enabled (`true`) or disabled (`false`).
+    ///
+    /// # Returns
+    /// Returns the updated instance of `Self`, allowing method chaining.
+    ///
+    /// # Example
+    /// ```
+    /// let config = Config::new()
+    ///     .verbose(true)
+    ///     .build();
+    /// ```
+    /// ```
+    pub fn verbose(mut self, verbose: bool) -> Self {
+        self.verbose = Some(verbose);
         self
     }
 
