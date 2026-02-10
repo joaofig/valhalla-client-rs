@@ -155,7 +155,8 @@ pub struct Manifest {
     use_timestamps: Option<bool>,
     trace_options: Option<TraceOptions>,
     linear_references: Option<bool>,
-    shape: Vec<ShapePoint>,
+    shape: Option<Vec<ShapePoint>>,
+    verbose: Option<bool>,
 }
 
 impl Manifest {
@@ -168,8 +169,7 @@ impl Manifest {
     /// Set the shape for the trace route
     ///
     pub fn shape(mut self, shape: impl IntoIterator<Item = ShapePoint>) -> Self {
-        self.shape = shape.into_iter().collect();
-        debug_assert!(self.shape.len() >= 2);
+        self.shape = Some(shape.into_iter().collect());
         self
     }
 
@@ -237,6 +237,32 @@ impl Manifest {
     /// ```
     pub fn use_timestamps(mut self, use_timestamps: bool) -> Self {
         self.use_timestamps = Some(use_timestamps);
+        self
+    }
+
+    /// ```rust
+    /// Sets the verbosity level for the object.
+    ///
+    /// This method allows you to enable or disable verbose mode by passing
+    /// a boolean value. When `true`, verbose mode is enabled; when `false`,
+    /// it is disabled. The `verbose` setting is stored as an `Option<bool>`.
+    ///
+    /// # Parameters
+    /// - `verbose`: A boolean value indicating whether verbose mode
+    ///   should be enabled (`true`) or disabled (`false`).
+    ///
+    /// # Returns
+    /// Returns the updated instance of `Self`, allowing method chaining.
+    ///
+    /// # Example
+    /// ```
+    /// let config = Config::new()
+    ///     .verbose(true)
+    ///     .build();
+    /// ```
+    /// ```
+    pub fn verbose(mut self, verbose: bool) -> Self {
+        self.verbose = Some(verbose);
         self
     }
 
