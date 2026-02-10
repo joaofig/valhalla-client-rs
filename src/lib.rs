@@ -384,7 +384,40 @@ impl Valhalla {
         Ok(response.trip)
     }
 
-    /// Make a trace route (map-matching) request
+    /// ```rust
+    /// Traces the route based on the provided manifest and retrieves the trip details.
+    ///
+    /// # Arguments
+    ///
+    /// * `manifest` - An instance of `trace_route::Manifest` containing the necessary information
+    ///                to trace a route such as source, destination, and other parameters.
+    ///
+    /// # Returns
+    ///
+    /// * `Result<route::Trip, Error>` - On success, returns a `route::Trip` object containing the
+    ///                                   detailed information about the traced route. On failure,
+    ///                                   returns an `Error` indicating the issue.
+    ///
+    /// # Errors
+    ///
+    /// This function can return an error in the following scenarios:
+    /// * If the request to trace the route fails.
+    /// * If the response from the tracing operation cannot be parsed correctly.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use your_library::trace_route::Manifest;
+    ///
+    /// async fn example_usage() -> Result<(), your_library::Error> {
+    ///     let client = your_library::Client::new();
+    ///     let manifest = Manifest::new("source", "destination");
+    ///     let trip = client.trace_route(manifest).await?;
+    ///     println!("Traced route: {:?}", trip);
+    ///     Ok(())
+    /// }
+    /// ```
+    /// ```
     pub async fn trace_route(&self, manifest: trace_route::Manifest) -> Result<route::Trip, Error> {
         let response: route::Response = self.do_request(manifest, "trace_route", "trace_route").await?;
         Ok(response.trip)
