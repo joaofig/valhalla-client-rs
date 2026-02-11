@@ -128,7 +128,9 @@ mod tests {
     #[test]
     fn decode_shape_works_america() {
         // shape from https://valhalla1.openstreetmap.de/optimized_route?json=%7B%22locations%22%3A%5B%7B%22lat%22%3A40.042072%2C%22lon%22%3A-76.306572%7D%2C%7B%22lat%22%3A39.991889%2C%22lon%22%3A-76.781939%7D%2C%7B%22lat%22%3A39.984460%2C%22lon%22%3A-76.695075%7D%2C%7B%22lat%22%3A39.996900%2C%22lon%22%3A-76.768704%7D%2C%7B%22lat%22%3A39.983901%2C%22lon%22%3A-76.707604%7D%5D%2C%22costing%22%3A%22auto%22%2C%22units%22%3A%22kilometers%22%7D
-        let shape = decode_shape_polyline6("}c|gkAlvkmqCkg@zf@_IbJaP`XoXq^aCwDyByGkAyGI}H?iFZeH`AuFfB}HxBaG~xAiaBtFgHtPqWfCeDpMsNva@px@rRp_@|s@vvAd{@tbBpiAfzBjNuw@lGo`@bAwHz@}I|@cQ^gNf@_OB_NJ}[BeJH{c@X{[SaK_@{S]}Q_@cJUgLAgJ?iUBoB^eMFoA`BsXbLgxAzK_{CpD}oA`@wUlBegAvAmh@fGcr@lGur@zGu]jGeSv@_BdNiYdCaDhHaJx^_[f^}Qre@cXjOgJtJ}HjIqKjEkHzD{HpDaIrB_GvA}EpAoFfAaGlA}H|@yHbAwK~Le{A|@yHv@{Ft@cEfBiHdCsHjCkF|ByDxQaYlE}GrCmEjR{Yp^al@nMgM|C_Fb]_j@xLwR~Ro[`DiElDsD~GmGlNmMpEwDkAwGcDwR_EkUmDuV{CmTiPwaAsc@{kCwL_t@{d@wmCqZkiB{NkcAcGwa@aAgHyJ_t@uI_q@_Kyp@aEgYqBqL}M_v@_Q{n@sVw}@gV{r@kLs\\sCeIqXmw@eFk]W{]dCic@Dw@vIsb@p@gD~Oiw@hAkGtBaLd@gFjAwc@GiGOeKs@ce@i@_HeEci@_@eFyDsh@gEsr@a@eZqAuaAo@cnAb@}JhAwpAnCq|CpCocBHcDZiNrAcp@`Biz@x@}m@bAgl@x@cWrHycAbGyi@tNe~@rAsIjDqTlDwS|G_g@vGyd@fGes@~DynAZ}nAXc~BoGeB}HsIaL}CqMeDmDbBwBe@iF}@wMkCkSuFsA_@");
+        let shape = decode_shape_polyline6(
+            "}c|gkAlvkmqCkg@zf@_IbJaP`XoXq^aCwDyByGkAyGI}H?iFZeH`AuFfB}HxBaG~xAiaBtFgHtPqWfCeDpMsNva@px@rRp_@|s@vvAd{@tbBpiAfzBjNuw@lGo`@bAwHz@}I|@cQ^gNf@_OB_NJ}[BeJH{c@X{[SaK_@{S]}Q_@cJUgLAgJ?iUBoB^eMFoA`BsXbLgxAzK_{CpD}oA`@wUlBegAvAmh@fGcr@lGur@zGu]jGeSv@_BdNiYdCaDhHaJx^_[f^}Qre@cXjOgJtJ}HjIqKjEkHzD{HpDaIrB_GvA}EpAoFfAaGlA}H|@yHbAwK~Le{A|@yHv@{Ft@cEfBiHdCsHjCkF|ByDxQaYlE}GrCmEjR{Yp^al@nMgM|C_Fb]_j@xLwR~Ro[`DiElDsD~GmGlNmMpEwDkAwGcDwR_EkUmDuV{CmTiPwaAsc@{kCwL_t@{d@wmCqZkiB{NkcAcGwa@aAgHyJ_t@uI_q@_Kyp@aEgYqBqL}M_v@_Q{n@sVw}@gV{r@kLs\\sCeIqXmw@eFk]W{]dCic@Dw@vIsb@p@gD~Oiw@hAkGtBaLd@gFjAwc@GiGOeKs@ce@i@_HeEci@_@eFyDsh@gEsr@a@eZqAuaAo@cnAb@}JhAwpAnCq|CpCocBHcDZiNrAcp@`Biz@x@}m@bAgl@x@cWrHycAbGyi@tNe~@rAsIjDqTlDwS|G_g@vGyd@fGes@~DynAZ}nAXc~BoGeB}HsIaL}CqMeDmDbBwBe@iF}@wMkCkSuFsA_@",
+        );
         // generated via http://valhalla.github.io/demos/polyline/
         let expected = [
             [-76.781943, 39.991887],
@@ -320,7 +322,9 @@ mod tests {
     }
     #[test]
     fn decode_shape_works_germany() {
-        let shape = decode_shape_polyline6("czaa{AythgU}K_CgFeAiB]mDq@uRoD_Ca@|@aOb@uHd@eIb@gHh@wI`@cHNmChBa[|Cih@fA_RzB^fm@fK~AVbLlBpHnAvMfCvDt@hMzBrOjCtGfArEz@dJvAdC^bC@jH~B^bBXjARvZnFzV|EpNjCrRnDpS~D`Dd@bK`BjEp@lCd@jLxBlI~A~F|QT`Ag@~Ga@pEYrCa@fExA`@~IfCzIjCj{@|Up}@hWlTpHpAbB^`C}Czh@}FgBmCy@sOqEwEjb@o@rFoAdLeAa@yIaDcFiBYdC");
+        let shape = decode_shape_polyline6(
+            "czaa{AythgU}K_CgFeAiB]mDq@uRoD_Ca@|@aOb@uHd@eIb@gHh@wI`@cHNmChBa[|Cih@fA_RzB^fm@fK~AVbLlBpHnAvMfCvDt@hMzBrOjCtGfArEz@dJvAdC^bC@jH~B^bBXjARvZnFzV|EpNjCrRnDpS~D`Dd@bK`BjEp@lCd@jLxBlI~A~F|QT`Ag@~Ga@pEYrCa@fExA`@~IfCzIjCj{@|Up}@hWlTpHpAbB^`C}Czh@}FgBmCy@sOqEwEjb@o@rFoAdLeAa@yIaDcFiBYdC",
+        );
         // generated via http://valhalla.github.io/demos/polyline/
         let expected = [
             [11.670365, 48.268722],

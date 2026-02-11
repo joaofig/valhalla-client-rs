@@ -1,7 +1,6 @@
-use serde::Serialize;
-use crate::{costing, DateTime};
 use crate::route::ShapePoint;
-
+use crate::{DateTime, costing};
+use serde::Serialize;
 
 #[derive(Serialize, Default, Debug, Clone, Copy, PartialEq, Eq)]
 /// Type of the directions
@@ -38,7 +37,7 @@ impl TraceOptions {
     pub fn builder() -> Self {
         Self::default()
     }
-    
+
     /// ```rust
     /// Sets the search radius for the object.
     ///
@@ -66,12 +65,12 @@ impl TraceOptions {
         self.search_radius = Some(search_radius);
         self
     }
-    
+
     /// ```rust
     /// Sets the GPS accuracy for the current instance.
     ///
-    /// This method allows configuring the GPS accuracy value, typically in meters. 
-    /// The provided value is wrapped in an `Option` and stored. The function 
+    /// This method allows configuring the GPS accuracy value, typically in meters.
+    /// The provided value is wrapped in an `Option` and stored. The function
     /// follows a builder pattern, enabling method chaining for a fluent API.
     ///
     /// # Arguments
@@ -90,7 +89,7 @@ impl TraceOptions {
         self.gps_accuracy = Some(gps_accuracy);
         self
     }
-    
+
     /// ```rust
     /// Sets the breakage distance for the current object.
     ///
@@ -117,7 +116,7 @@ impl TraceOptions {
         self.breakage_distance = Some(breakage_distance);
         self
     }
-    
+
     /// ```rust
     /// Sets the interpolation distance for the object and returns the modified instance.
     ///
@@ -219,7 +218,7 @@ impl Manifest {
         self.costing = Some(costing);
         self
     }
-    
+
     /// ```rust
     /// Sets whether timestamps should be used.
     ///
@@ -272,7 +271,7 @@ impl Manifest {
     ///  *
     ///  * This method allows you to configure tracing behavior by providing a `TraceOptions` object.
     ///  * The provided `trace_options` will be stored and used as part of the tracing configuration.
-    ///  * 
+    ///  *
     ///  * # Parameters
     ///  * - `trace_options`: An instance of `TraceOptions` that specifies the desired tracing configuration.
     ///  *
@@ -291,7 +290,6 @@ impl Manifest {
         self
     }
 }
-
 
 #[cfg(test)]
 mod test {

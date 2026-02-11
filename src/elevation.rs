@@ -57,7 +57,10 @@ impl Manifest {
     ///
     /// Default: [`ShapeFormat::Polyline6`], meaning the encoded polyline is expected to be 6 digit precision.
     pub fn shape_format(mut self, shape_format: ShapeFormat) -> Self {
-        debug_assert!(self.shape.is_none(), "shape is set and setting the shape_format is requested. This combination does not make sense: shapes and encoded_polylines as input are mutually exclusive.");
+        debug_assert!(
+            self.shape.is_none(),
+            "shape is set and setting the shape_format is requested. This combination does not make sense: shapes and encoded_polylines as input are mutually exclusive."
+        );
         self.shape_format = Some(shape_format);
         self
     }
@@ -66,8 +69,14 @@ impl Manifest {
     /// The input coordinates can come from many input sources, such as a GPS location, a point or a click on a map, a geocoding service, and so on.
     /// The locations are visited in the order specified.
     pub fn shape(mut self, shape: impl IntoIterator<Item = impl Into<ShapePoint>>) -> Self {
-        debug_assert!(self.shape_format.is_none(), "shape_format is set and setting a shape is requested. This combination does not make sense: shapes and encoded_polylines as input are mutually exclusive.");
-        debug_assert!(self.encoded_polyline.is_none(), "encoded_polyline is set and setting a shape is requested. This combination does not make sense: shapes and encoded_polylines as input are mutually exclusive.");
+        debug_assert!(
+            self.shape_format.is_none(),
+            "shape_format is set and setting a shape is requested. This combination does not make sense: shapes and encoded_polylines as input are mutually exclusive."
+        );
+        debug_assert!(
+            self.encoded_polyline.is_none(),
+            "encoded_polyline is set and setting a shape is requested. This combination does not make sense: shapes and encoded_polylines as input are mutually exclusive."
+        );
         self.shape = Some(shape.into_iter().map(|s| s.into()).collect());
         self
     }
@@ -76,7 +85,10 @@ impl Manifest {
     /// Details on polyline encoding and decoding can be found [here](https://valhalla.github.io/valhalla/decoding/).
     /// See [`Self::shape_format`] to set the precision of the polyline.
     pub fn encoded_polyline(mut self, encoded_polyline: impl ToString) -> Self {
-        debug_assert!(self.shape.is_none(), "shape is set and setting the encoded_polyline is requested. This combination does not make sense: shapes and encoded_polylines as input are mutually exclusive.");
+        debug_assert!(
+            self.shape.is_none(),
+            "shape is set and setting the encoded_polyline is requested. This combination does not make sense: shapes and encoded_polylines as input are mutually exclusive."
+        );
         self.encoded_polyline = Some(encoded_polyline.to_string());
         self
     }

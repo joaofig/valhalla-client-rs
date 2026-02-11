@@ -10,12 +10,12 @@ pub mod elevation;
 pub mod matrix;
 /// Models connected to the Turn-by-turn [`route`]ing-api
 pub mod route;
-/// Models connected to the Map-matching [`trace_route`]ing-api
-pub mod trace_route;
 /// Shape decoding support for [`route`] and [`elevation`]
 pub mod shapes;
 /// Models connected to the healthcheck via the [`status`]-API
 pub mod status;
+/// Models connected to the Map-matching [`trace_route`]ing-api
+pub mod trace_route;
 
 use log::trace;
 use serde::{Deserialize, Serialize};
@@ -168,7 +168,7 @@ pub struct RemoteError {
 /// synchronous ("blocking") client implementation
 #[cfg(feature = "blocking")]
 pub mod blocking {
-    use crate::{elevation, matrix, route, status, trace_route, Error, VALHALLA_PUBLIC_API_URL};
+    use crate::{Error, VALHALLA_PUBLIC_API_URL, elevation, matrix, route, status, trace_route};
     use std::sync::Arc;
 
     #[derive(Debug, Clone)]
@@ -219,8 +219,43 @@ pub mod blocking {
             self.runtime
                 .block_on(async move { self.client.route(manifest).await })
         }
-
-        /// Make a trace route (map-matching) request
+        /// ```rust
+        ///     /**
+        ///      * Traces a routing path based on the provided manifest and returns the resulting trip details.
+        ///      *
+        ///      * This function initiates an asynchronous operation to compute the route trace and
+        ///      * makes it synchronous by using the runtime to block until the operation is complete.
+        ///      *
+        ///      * # Arguments
+        ///      *
+        ///      * * `manifest` - An instance of `trace_route::Manifest` which contains the details
+        ///      *                required to compute the route trace.
+        ///      *
+        ///      * # Returns
+        ///      *
+        ///      * * `Ok(route::Trip)` - On success, returns a `route::Trip` object containing details of the traced route.
+        ///      * * `Err(Error)` - If an error occurs during the trace operation, an `Error` is returned with additional context.
+        ///      *
+        ///      * # Errors
+        ///      *
+        ///      * This function will return an error if:
+        ///      * - The `trace_route` method on the underlying client fails.
+        ///      * - The runtime fails to execute the asynchronous block.
+        ///      *
+        ///      * # Example
+        ///      *
+        ///      * ```
+        ///      * let manifest = trace_route::Manifest::new(...); // Initialize the manifest
+        ///      * match service.trace_route(manifest) {
+        ///      *     Ok(trip) => println!("Successfully traced route: {:?}", trip),
+        ///      *     Err(e) => eprintln!("Error tracing route: {:?}", e),
+        ///      * }
+        ///      * ```
+        ///      *
+        ///      * This function delegates the actual route tracing to the underlying client
+        ///      * and handles the asynchronous execution of the task internally.
+        ///      */
+        /// ```
         pub fn trace_route(&self, manifest: trace_route::Manifest) -> Result<route::Trip, Error> {
             self.runtime
                 .block_on(async move { self.client.trace_route(manifest).await })
@@ -384,9 +419,27 @@ impl Valhalla {
         Ok(response.trip)
     }
 
-    /// Make a trace route (map-matching) request
+    /// ```rust
+    /// Asynchronously traces a route based on the given manifest and returns the resulting trip.
+    ///
+    /// # Parameters
+    /// - `self`: A reference to the current instance of the struct.
+    /// - `manifest`: A `trace_route::Manifest` object that contains the details required to perform
+    ///   the route tracing operation.
+    ///
+    /// # Returns
+    /// - `Result<route::Trip, Error>`:
+    ///   - On success, returns a `route::Trip` object representing the traced route.
+    ///   - On failure, returns an `Error` explaining why the route tracing failed.
+    ///
+    /// # Errors
+    /// This function will return an error if:
+    /// - The underlying request to trace the route fails.
+    /// - The response cannot be properly converted into a `route
     pub async fn trace_route(&self, manifest: trace_route::Manifest) -> Result<route::Trip, Error> {
-        let response: route::Response = self.do_request(manifest, "trace_route", "trace_route").await?;
+        let response: route::Response = self
+            .do_request(manifest, "trace_route", "trace_route")
+            .await?;
         Ok(response.trip)
     }
 

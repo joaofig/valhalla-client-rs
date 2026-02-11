@@ -1,6 +1,6 @@
+pub use crate::DateTime;
 use crate::costing;
 pub use crate::shapes::ShapePoint;
-pub use crate::DateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Debug, Clone)]
