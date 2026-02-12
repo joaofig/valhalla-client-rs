@@ -165,8 +165,25 @@ impl Manifest {
         Self::default()
     }
 
-    /// Set the shape for the trace route
+    /// ```rust
+    /// Sets the shape of the object using an iterator of `ShapePoint`.
     ///
+    /// This method takes an iterable collection of `ShapePoint` items, converts it into an iterator,
+    /// collects the items into a collection, and sets it as the shape of the object.
+    ///
+    /// # Parameters
+    /// - `shape`: An iterable collection of items that implement the `ShapePoint` trait.
+    ///   The shape defines the geometric or logical structure of the object.
+    ///
+    /// # Returns
+    /// - `Self`: Returns the modified instance of the object, allowing for method chaining.
+    ///
+    /// # Example
+    /// ```
+    /// let points = vec![ShapePoint::new(0, 0), ShapePoint::new(1, 1)];
+    /// let manifest = Manifest::builder().shape(points);
+    /// ```
+    /// ```
     pub fn shape(mut self, shape: impl IntoIterator<Item = ShapePoint>) -> Self {
         self.shape = Some(shape.into_iter().collect());
         self
@@ -189,7 +206,7 @@ impl Manifest {
     ///
     /// # Example
     /// ```
-    /// let obj = Manifest::build()
+    /// let obj = Manifest::builder()
     ///     .durations(vec![100, 200, 300]);
     /// ```
     ///
@@ -201,19 +218,57 @@ impl Manifest {
         self
     }
 
-    /// Set the shape match type for the trace route
-    ///
+
+    /// ```rust
+    ///     /// Sets the shape matching type for the current instance.
+    ///     ///
+    ///     /// This method allows you to specify the type of shape matching to be used by assigning
+    ///     /// a `ShapeMatchType` value to the `shape_match` field of the instance. The method consumes
+    ///     /// the current instance (`self`), modifies the `shape_match` field, and returns the updated instance.
+    ///     ///
+    ///     /// # Parameters
+    ///     /// - `shape_match`: The type of shape matching to be applied, represented as a `ShapeMatchType` enum.
+    ///     ///
+    ///     /// # Returns
+    ///     /// - `Self`: An updated instance of the struct, with the `shape_match` field set to the provided value.
+    ///     ///
+    ///     /// # Example
+    ///     /// ```
+    ///     /// let instance = Manifest::builder()
+    ///     ///     .shape_match(ShapeMatchType::Exact);
+    ///     /// ```
+    /// ```
     pub fn shape_match(mut self, shape_match: ShapeMatchType) -> Self {
         self.shape_match = Some(shape_match);
         self
     }
 
-    /// Configures the costing model
+    /// ```rust
+    /// Sets the `costing` field of the current object.
     ///
-    /// Valhalla's routing service uses dynamic, run-time costing to generate the route path.
-    /// Can be configured with different settings depending on the costing model used.
+    /// This function takes a `Costing` object and assigns it to the `costing`
+    /// field of the object. The function consumes the current object, updates
+    /// its `costing` field, and then returns the updated object for method
+    /// chaining.
     ///
-    /// Default: [`costing::Costing::Auto`]
+    /// # Arguments
+    ///
+    /// * `costing` - A `costing::Costing` instance that represents the costing
+    ///   information to be set.
+    ///
+    /// # Returns
+    ///
+    /// Returns the updated instance of `Self` with the `costing` field set.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use your_crate::costing::Costing;
+    ///
+    /// let costing_instance = Manifest::builder()
+    ///     .costing(costing_instance);
+    /// ```
+    /// ```
     pub fn costing(mut self, costing: costing::Costing) -> Self {
         self.costing = Some(costing);
         self
@@ -231,7 +286,7 @@ impl Manifest {
     ///
     /// # Example
     /// ```
-    /// let config = Config::new().use_timestamps(true);
+    /// let manifest = Manifest::builder().use_timestamps(true);
     /// ```
     /// ```
     pub fn use_timestamps(mut self, use_timestamps: bool) -> Self {
@@ -255,9 +310,8 @@ impl Manifest {
     ///
     /// # Example
     /// ```
-    /// let config = Config::new()
-    ///     .verbose(true)
-    ///     .build();
+    /// let manifest = Manifest::builder()
+    ///     .verbose(true);
     /// ```
     /// ```
     pub fn verbose(mut self, verbose: bool) -> Self {
